@@ -1,5 +1,6 @@
+from builtins import staticmethod
 from django.contrib.auth.models import User
-from  django.db import models
+from django.db import models
 
 
 class Game(models.Model):
@@ -13,5 +14,28 @@ class Game(models.Model):
     creator_choice = models.TextField(null=True, blank=True,)
     opponent_choice = models.TextField(null=True, blank=True)
     status = models.TextField(blank=True, default="waiting")
+
+
+    @staticmethod
+    def create_new(name, user):
+        new_game = Game(creator=user, game_name=name)
+        new_game.save()
+        return new_game
+
+    def set_creator(self, user):
+        self.creator = User.objects.filter(username=user)[0]
+        self.save(update_fields=["creator"])
+
+    def set_opponent(self, user):
+        self.opponent = User.objects.filter(username=user)[0]
+        self.set_status("running")
+        self.save(update_fields=["opponent"])
+
+    def set_status(self, status):
+        self.status = status
+        self.save(update_fields=["status"])
+
+    def __str__(self):
+        return self.game_name
 
 
