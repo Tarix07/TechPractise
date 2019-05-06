@@ -91,3 +91,7 @@ class Game(models.Model):
     def get_completed_games():
         return Game.objects.filter(status="completed").order_by('completed')
 
+    @staticmethod
+    def get_random():
+        if Game.objects.filter(status__exact="waiting") is not None:
+            return Game.objects.filter(status__exact="waiting").order_by("?").first()
