@@ -78,5 +78,16 @@ class Game(models.Model):
         self.opponent_choice = message
         self.save(update_fields=["opponent_choice"])
 
+    @staticmethod
+    def get_available_games():
+        return Game.objects.filter(status__exact="waiting").order_by('game_name')[:20]
 
+    @staticmethod
+    def get_games_for_player(user):
+        from django.db.models import Q
+        return Game.objects.filter(Q(opponent=user) | Q(creator=user))
+
+    @staticmethod
+    def get_completed_games():
+        return Game.objects.filter(status="completed").order_by('completed')
 
