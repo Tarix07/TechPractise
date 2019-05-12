@@ -38,15 +38,31 @@ class GameConsumer(WebsocketConsumer):
     def disconnect(self, close_code):
         pass
 
+    # Receive message from WebSocket
     def receive(self, text_data):
         text_data_json = json.loads(text_data)
-        message = text_data_json['message']
+        message = text_data_json.get('message')
 
-        self.send(text_data=json.dumps({
-            'message': message
-        }))
 
+        me = self.scope['user']
+        game = Game.get_game(self.scope['url_route']['kwargs']['room_name'])
+
+        if me.username == game.creator.username:
+            game.make_creator_choice(message)
+
+        elif me.username == game.opponent.username:
+            game.make_opponent_choice(message)
+
+        async_to_sync(self.channel_layer.group_send)(
+            self.room_group_name,
+            {
+                'type': 'game_message',
+                'message': message,
+                'username': me.username,
+            }
+        )    
       
+
     def close_message(self, event):
         message = event['message']
 
@@ -54,3 +70,14 @@ class GameConsumer(WebsocketConsumer):
         self.send(text_data=json.dumps({
             'message': message,
         }))
+
+     # Receive message from room group
+    def game_message(self, event):
+        message = event['message']
+        username = event['username']
+
+        # Send message to WebSocket
+        self.send(text_data=json.dumps({
+            'message': message,
+            'username': username,
+        }))    
