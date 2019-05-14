@@ -53,16 +53,28 @@ class GameConsumer(WebsocketConsumer):
         elif me.username == game.opponent.username:
             game.make_opponent_choice(message)
 
+
+        result = ""
+
+        if game.creator_choice is not None and game.opponent_choice is not None:
+            result = game.result()
+
+        winner = ""
+        if game.winner is not None:
+            winner = game.winner.username
+
         async_to_sync(self.channel_layer.group_send)(
             self.room_group_name,
             {
                 'type': 'game_message',
                 'message': message,
                 'username': me.username,
+                'winner': winner,
+                'result': result
             }
         )    
       
-
+      
     def close_message(self, event):
         message = event['message']
 
@@ -75,9 +87,13 @@ class GameConsumer(WebsocketConsumer):
     def game_message(self, event):
         message = event['message']
         username = event['username']
+        winner = event['winner']
+        result = event['result']
 
         # Send message to WebSocket
         self.send(text_data=json.dumps({
             'message': message,
             'username': username,
+            'winner': winner,
+            'result': result
         }))    
