@@ -95,3 +95,10 @@ class Game(models.Model):
     def get_random():
         if Game.objects.filter(status__exact="waiting") is not None:
             return Game.objects.filter(status__exact="waiting").order_by("?").first()
+
+
+class Profile(models.Model):
+    user = models.ForeignKey(User, related_name='player', on_delete=models.CASCADE)
+    wins = models.IntegerField(blank=True, default=0)
+    loses = models.IntegerField(blank=True, default=0)
+    rating = models.FloatField(blank=True, default=0)
