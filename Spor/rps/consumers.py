@@ -35,8 +35,21 @@ class GameConsumer(WebsocketConsumer):
 
         self.accept()
 
+ 
     def disconnect(self, close_code):
-        pass
+        # Leave room group
+        game = Game.get_game(self.scope['url_route']['kwargs']['room_name'])
+
+        if game.opponent_choice is None:
+            game.opponent = None
+            game.set_status("waiting")
+            game.save()
+
+        async_to_sync(self.channel_layer.group_discard)(
+            self.room_group_name,
+            self.channel_name
+        )
+        
 
     # Receive message from WebSocket
     def receive(self, text_data):
