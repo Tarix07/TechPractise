@@ -102,3 +102,18 @@ class Profile(models.Model):
     wins = models.IntegerField(blank=True, default=0)
     loses = models.IntegerField(blank=True, default=0)
     rating = models.FloatField(blank=True, default=0)
+
+    @staticmethod
+    def get_profile(user):
+        profile = Profile.objects.filter(user=user)
+        if profile.exists():
+            profile = profile.first()
+        else:
+            profile = Profile.create_new_profile(user)
+        return profile
+
+    @staticmethod
+    def create_new_profile(user):
+        new_profile = Profile(user=user)
+        new_profile.save()
+        return new_profile
