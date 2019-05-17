@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="45d2cd98-c425-4c96-aafa-50d1db2c5740" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/rps/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/rps/models.py" afterDir="false" />
-    </list>
+    <list default="true" id="45d2cd98-c425-4c96-aafa-50d1db2c5740" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,7 +70,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="-7" />
     <option name="width" value="697" />
     <option name="height" value="735" />
@@ -165,15 +163,15 @@
       <workItem from="1559577576585" duration="227000" />
       <workItem from="1559583092136" duration="396000" />
       <workItem from="1559583694608" duration="884000" />
-      <workItem from="1559585195748" duration="4135000" />
+      <workItem from="1559585195748" duration="4652000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="5642000" />
+    <option name="totallyTimeSpent" value="6159000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.26096824" />
