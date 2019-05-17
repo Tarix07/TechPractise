@@ -117,3 +117,29 @@ class Profile(models.Model):
         new_profile = Profile(user=user)
         new_profile.save()
         return new_profile
+
+    def profile_wins(self):
+        self.wins += 1
+        self.save(update_fields=['wins'])
+        self.wl()
+
+    def profile_loses(self):
+        self.loses += 1
+        self.save(update_fields=['loses'])
+        self.wl()
+
+    def wl(self):
+        if self.loses == 0:
+            winlose = self.wins
+        else:
+            winlose = self.wins / self.loses
+        self.rating = winlose
+        self.save(update_fields=['rating'])
+
+    @staticmethod
+    def change_profile(user, kod):
+        profile = Profile.get_profile(user)
+        if kod == 1:
+            profile.profile_wins()
+        else:
+            profile.profile_loses()
