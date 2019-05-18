@@ -110,3 +110,14 @@ class GameConsumer(WebsocketConsumer):
             'winner': winner,
             'result': result
         }))    
+
+
+class LobbyConsumer(WebsocketConsumer):
+        def connect(self):
+            self.room_group_name = "lobby"
+            async_to_sync(self.channel_layer.group_add)(
+                self.room_group_name,
+                self.channel_name
+            )
+
+            self.accept()        

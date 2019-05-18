@@ -5,4 +5,5 @@ from . import consumers
 
 websocket_urlpatterns = [
     url(r'^ws/game/(?P<room_name>[^/]+)/$', consumers.GameConsumer),
+      url(r'^ws/', consumers.LobbyConsumer),
 ]
