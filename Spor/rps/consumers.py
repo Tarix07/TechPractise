@@ -120,4 +120,43 @@ class LobbyConsumer(WebsocketConsumer):
                 self.channel_name
             )
 
-            self.accept()        
+            self.accept()       
+
+         def receive(self, text_data):
+            text_data_json = json.loads(text_data)
+            message = text_data_json['message']
+            me = self.scope['user']
+            action = text_data_json['action']
+           
+            if action == "create":
+                game = Game.objects.filter(game_name=message)
+
+                if game.exists():
+                    message = "deny"
+                else:
+                    game = Game.create_new(message,  me)
+                    message = "accept"
+
+
+                dani =Game.objects.filter(status__exact="waiting").order_by('game_name')[:20]
+
+                for i in dani:
+                    print(i.game_name)
+                dani = serializers.serialize('json', dani, fields=('game_name','creator'))
+                self.send(text_data=json.dumps({
+                    'type': 'response_message',
+                    'message': message,
+                    'dani': dani,
+                }))
+
+
+        def response_message(self, event):
+            message = event['message']
+            dani = event['dani']
+            randomgame = event['']
+
+            # Send message to WebSocket
+            self.send(text_data=json.dumps({
+                'message': message,
+                'dani': dani,
+            }))     
