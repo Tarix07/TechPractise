@@ -127,7 +127,17 @@ class LobbyConsumer(WebsocketConsumer):
             message = text_data_json['message']
             me = self.scope['user']
             action = text_data_json['action']
-           
+            if action == "random":
+                randomGame = ""
+                if Game.get_available_games().count() != 0:
+                    randomGame = Game.get_random().game_name
+
+                self.send(text_data=json.dumps({
+                    'type': 'response_message',
+                    'message': "random",
+                    'randomgame': randomGame
+                }))
+
             if action == "create":
                 game = Game.objects.filter(game_name=message)
 
