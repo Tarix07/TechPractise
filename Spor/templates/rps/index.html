@@ -1,0 +1,118 @@
+{% extends "rps/layout.html" %}
+
+{% block content %}
+    <div class="game-form">
+            <input class="text_field" id="room-name-input" type="text" placeholder="Enter game name, that you want to create!" size="100"/><br/>
+            <button id="room-name-submit"  value="Enter">Enter</button>
+            <p id="or_text">OR</p>
+            <input id="random-game" type="button" value="Random Game"/>
+    </div>
+    <div id="accessblock">
+        <p id="access"></p>
+    </div>
+    <hr/>
+
+
+    <div class="table_container">
+    <p id="av_text">Available Games</p>
+    <table id="games">
+
+        {% for games in object_list %}
+                <tr>
+                    <td><p class="table_text">{{ games.game_name }}</p></td>
+
+                    <td><a href="/game/{{ games.game_name }}"><input class="table_button" type="button" value="Join"/></a></td>
+                </tr>
+        {% endfor %}
+
+     </table>
+    </div>
+    <script>
+        var isAccept = false;
+        var lobbySocket = new WebSocket(
+        'ws://' + window.location.host +
+        '/ws/');
+
+        lobbySocket.onmessage = function(e) {
+        var data = JSON.parse(e.data);
+        var message = data.message;
+
+        console.log(data.message);
+        if(message=="accept"){
+
+            var roomName = document.querySelector('#room-name-input').value;
+                window.location.pathname = '/game/' + roomName + '/';
+        }
+        if(message=="deny"){
+                document.querySelector('#access').textContent = "Game with this name is already exist..." +
+                    "Try something other !";
+        }
+        if(message=="random"){
+            if(data.randomgame != ""){
+            window.location.pathname = '/game/' + data.randomgame + '/';}
+            else {
+                 document.querySelector('#access').textContent = "There are no available games...Sorry";
+            }
+        }
+        if(message=="new_game"){
+
+            create_game(data.name, data.username);
+        }
+    };
+
+    lobbySocket.onclose = function(e) {
+        console.error('Chat socket closed unexpectedly');
+    };
+
+
+        document.querySelector('#room-name-input').focus();
+        document.querySelector('#room-name-input').onkeyup = function(e) {
+            if (e.keyCode === 13) {  // enter, return
+                document.querySelector('#room-name-submit').click();
+            }
+        };
+
+        document.querySelector('#room-name-submit').onclick = function(e) {
+            var roomName = document.querySelector('#room-name-input').value;
+            lobbySocket.send(JSON.stringify({
+                'action': "create",
+            'message': roomName
+
+            }));
+        };
+        document.querySelector('#random-game').onclick = function(e) {
+            lobbySocket.send(JSON.stringify({
+            'action': "random",
+                'message': ""
+
+
+            }));
+        };
+
+        function create_game(name, creator) {
+            var element = " <tr>\n" +
+                "                    <td><p class=\"table_text\">"+ name +"</p></td>\n" +
+                "                    <td><a href=\"/game/"+name+"\"><input class=\"table_button\" type=\"button\" value=\"Join\"/></a></td>\n" +
+                "                </tr>";
+
+
+            $('#games').prepend(element);
+        }
+    </script>
+    <script>
+        var input = document.querySelector('.game-form');
+        var search = document.querySelector('.text_field')
+        var button = document.querySelector('#room-name-submit');
+        button.addEventListener('click', function(e) {
+         e.preventDefault();
+         input.classList.toggle('active');
+        })
+        search.addEventListener('focus', function() {
+        input.classList.add('focus');
+        })
+
+        search.addEventListener('blur', function() {
+            search.value.length != 0 ? input.classList.add('focus') : input.classList.remove('focus');
+        })
+    </script>
+{% endblock %}

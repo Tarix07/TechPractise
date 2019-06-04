@@ -1,0 +1,117 @@
+{% extends "rps/layout.html" %}
+
+{% block content %}
+    {% load static %}
+    <div class="game_field">
+    <div class="players">
+        <p class = "player" id="creator"></p>
+            <p id="vs">VS</p>
+        <p class="player" id="opponent"></p>
+    </div>
+    <div class="log_block" id="winblock">
+        <p id="winner">Waiting for opponent ...</p>
+    </div>
+        <div class="buttons">
+            <button class="chBtn" id="game-rock"><img class ="btnImg" src="{% static 'rps/img/Rock.png' %}" /></button>
+
+            <button class="chBtn" id="game-paper"><img class ="btnImg" src="{% static 'rps/img/Paper.png' %}" /></button>
+            <button class="chBtn" id="game-scissors"><img class ="btnImg" src="{% static 'rps/img/Scissors.png' %}" /></button>
+        </div>
+    </div>
+
+
+<script>
+    var roomName = {{ room_name_json }};
+    var isCompleted = false;
+    var chatSocket = new WebSocket(
+        'ws://' + window.location.host +
+        '/ws/game/' + roomName + '/');
+    var username = "{{request.user.username}}";
+    chatSocket.onmessage = function(e) {
+        var data = JSON.parse(e.data);
+        //var message = data.message + " via " + data.username + "winner:" + data.winner;
+       // var winner = data.winner
+
+        console.log(data.winner);
+
+       if (data.message=="2players")
+       {
+            document.querySelector('#creator').textContent = data.creator;
+            document.querySelector('#opponent').textContent = data.opponent;
+            document.querySelector('#winner').textContent = "So... Let's start. Waiting for opponent choice..";
+       }
+
+       if (data.message=="waiting" & isCompleted !=true)
+       {
+            document.querySelector('#creator').textContent = data.creator;
+            document.querySelector('#opponent').textContent = data.opponent;
+            document.querySelector('#winner').textContent = "Waiting for opponent ...";
+       }
+
+        if (data.message=="closed") {
+             document.querySelector('#winner').textContent = "Sorry... This  game is completed.  Redirecting to lobby";
+            $(".chBtn").hide();
+
+             document.location.replace("http://127.0.0.1/");
+        }
+        else if (data.result != "tai") {
+             if (data.message == "completed") {
+                 isCompleted =true
+                if (username == data.winner) {
+                    $("#winner").css({'color':'#38C667'},{'font-size':'25px'},{'font-weight':'bold'});
+
+                    document.querySelector('#winner').textContent = "You WIN!";
+                } else {
+                    document.querySelector('#winner').textContent = "You LOSE!";
+                    $("#winner").css({'color':'#D9534F'},{'font-size':'25px'},{'font-weight':'bold'});
+                }
+             }
+        } else {
+            document.querySelector('#winner').textContent = "You opponent is a genius like you...Try again!\n Waiting for opponent choice...";
+             $(".chBtn").show();
+
+        }
+    };
+
+    chatSocket.onclose = function(e) {
+        console.error('Chat socket closed unexpectedly');
+        //document.location.replace("http://127.0.0.1:8000/lobby");
+    };
+
+
+
+    document.querySelector('#game-rock').onclick = function(e) {
+
+        var message = "rock"
+        chatSocket.send(JSON.stringify({
+            'message': message,
+        }));
+         $(".chBtn").hide();
+         $("#game-rock").show();
+
+    };
+
+     document.querySelector('#game-scissors').onclick = function(e) {
+
+        var message = "scissors"
+        chatSocket.send(JSON.stringify({
+            'message': message,
+
+        }));
+        $(".chBtn").hide();
+        $("#game-scissors").show();
+    };
+
+      document.querySelector('#game-paper').onclick = function(e) {
+
+        var message = "paper"
+        chatSocket.send(JSON.stringify({
+            'message': message,
+
+        }));
+         $(".chBtn").hide();
+         $("#game-paper").show();
+    };
+
+</script>
+{% endblock %}
