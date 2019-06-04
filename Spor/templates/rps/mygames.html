@@ -1,0 +1,31 @@
+{% extends "rps/layout.html" %}
+
+{% block content %}
+
+    <div class="mystats">
+    <p class="table_text">My stats:</p>
+    <p class="table_text win">Wins: {{ profile.wins }} </p>
+    <p class="table_text lose">Loses: {{ profile.loses }}</p>
+    <p class="table_text rating">Rating: {{ profile.rating }}</p>
+    </div>
+
+    <p id="av_text">My games</p>
+    <table id="games">
+
+        {% for games in games_for_player%}
+             {#% if request.user == games.creator or request.user == games.opponent %#}
+                <tr class="mygames">
+                    <td><p class="table_text">{{ games.game_name }}</p></td>
+                    <td><p class="table_text">{{ games.creator.username }}</p></td>
+                    <td><p class="table_text vs_table">VS</p></td>
+                    <td><p class="table_text">{{ games.opponent.username }}</p></td>
+                    {% if request.user == games.winner %}
+                         <td><p class="table_text win">Winner</p></td>
+                    {% else %}
+                          <td><p class="table_text lose">Looser</p></td>
+                    {% endif %}
+                </tr>
+            {#% endif %#}
+        {% endfor %}
+     </table>
+{% endblock %}

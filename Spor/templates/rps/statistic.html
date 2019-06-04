@@ -1,0 +1,145 @@
+{% extends "rps/layout.html" %}
+
+{% block content %}
+
+    <div class="stats">
+        <p class="table_text">Best player:  <span class="win">{{ best_player.user.username }}</span> with rating <span class="win"> {{ best_player.rating }}</span></p>
+        <p class="table_text">Worst player:  <span class="lose"> {{ worst_player.user.username }}</span> with rating <span class="lose">  {{ worst_player.rating}}</span></p>
+    <p class="table_text">Available Games:  {{ available_games }}</p>
+    <p class="table_text">Completed Games:  {{ completed_games }}</p>
+    </div>
+    <p id="av_text">Games history</p>
+    <table class="statistic">
+                <tr>
+                    <th><button> Game name </button></th>
+                    <th><button>Creator</button></th>
+                    <th><button>Creator`s choice</button></th>
+                    <th><button>Opponent</button></th>
+                    <th><button>Opponent`s choice</button></th>
+                    <th><button>Date</button></th>
+                    <th><button>Winner</button></th>
+                </tr>
+
+        {% for games in completed_games_list %}
+                <tr>
+                    <td><p class="table_text">{{ games.game_name }}</p></td>
+                        <td><p class="table_text">{{ games.creator.username }}</p></td>
+                        <td><p class="table_text">{{ games.creator_choice }}</p></td>
+                        <td><p class="table_text">{{ games.opponent.username }}</p></td>
+                        <td><p class="table_text">{{ games.opponent_choice }}</p></td>
+
+                    <td><p class="table_text">{{ games.completed.date }}</p></td>
+                    <td><p class="table_text win">{{ games.winner.username }}</p></td>
+                </tr>
+
+        {% endfor %}
+     </table>
+ <script>
+ var table = $('.statistic')
+
+$('th')
+  .each(function(){
+
+  var th = $(this),
+      thIndex = th.index(),
+      inverse = false;
+
+  th.click(function(){
+
+    table.find('td').filter(function(){
+
+      return $(this).index() === thIndex;
+
+    }).sortElements(function(a, b){
+
+      if(thIndex == 0){
+        var textA = $.text([a]).split(".");
+        var textB = $.text([b]).split(".");
+
+        var result;
+        if(textA[2] == textB[2]){
+          if( textA[1] == textB[1] ){
+            result = textA[0] > textB[0] ?
+            inverse ? -1 : 1
+            : inverse ? 1 : -1;
+          }else{
+            result = textA[1] > textB[1] ?
+              inverse ? -1 : 1
+            : inverse ? 1 : -1;
+          }
+        }else{
+          result = textA[2] > textB[2] ?
+              inverse ? -1 : 1
+            : inverse ? 1 : -1;
+        }
+
+        return result;
+
+      }else{
+
+        if( $.text([a]) == $.text([b]) )
+          return 0;
+
+        return $.text([a]) > $.text([b]) ?
+          inverse ? -1 : 1
+        : inverse ? 1 : -1;
+      }
+    }, function(){
+
+      // parentNode is the element we want to move
+      return this.parentNode;
+
+    });
+
+    inverse = !inverse;
+
+  });
+});
+
+jQuery.fn.sortElements = (function(){
+
+    var sort = [].sort;
+
+    return function(comparator, getSortable) {
+
+        getSortable = getSortable || function(){return this;};
+
+        var placements = this.map(function(){
+
+            var sortElement = getSortable.call(this),
+                parentNode = sortElement.parentNode,
+
+                // Since the element itself will change position, we have
+                // to have some way of storing it's original position in
+                // the DOM. The easiest way is to have a 'flag' node:
+                nextSibling = parentNode.insertBefore(
+                    document.createTextNode(''),
+                    sortElement.nextSibling
+                );
+
+            return function() {
+
+                if (parentNode === this) {
+                    throw new Error(
+                        "You can't sort elements if any one is a descendant of another."
+                    );
+                }
+
+                // Insert before flag:
+                parentNode.insertBefore(this, nextSibling);
+                // Remove flag:
+                parentNode.removeChild(nextSibling);
+
+            };
+
+        });
+
+        return sort.call(this, comparator).each(function(i){
+            placements[i].call(getSortable.call(this));
+        });
+
+    };
+
+})();
+ </script>
+{% endblock %}
