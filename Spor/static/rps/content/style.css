@@ -1,0 +1,393 @@
+body{
+    padding-top: 0px;
+}
+
+.navbar-nav {
+    margin: 15px;
+}
+
+.navbar-inverse .navbar-nav li a {
+    color: #555555;
+    font-weight: bolder;
+
+}
+.navbar-inverse .navbar-nav li a:hover{
+    color: #d9534f;
+
+}
+#header{
+    background: rgba(0,0,0, 0.00);
+    transition: .7s;
+    border: none;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+#header:hover{
+     background: rgba(0,0,0,.1);
+}
+
+#but{
+    margin: 20px;
+}
+
+
+
+.cool-link{
+    color: #333;
+}
+
+.cool-link::after
+{
+    content: "";
+    display: block;
+    width: 0;
+    height: 2px;
+    background:  #d9534f;
+    transition: width .3s
+}
+
+.cool-link:hover::after
+{
+    width: 100%;
+    transition: width .3s;
+}
+
+#loginBtn{
+    background: #d9534f;
+    border: none;
+    color: #fff;
+    border-radius: 8px;
+}
+
+#loginBtn:hover{
+    background-color: rgba(255, 94, 90, 0.62);
+    transition: .3s;
+}
+
+#loginForm{
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+
+
+}
+
+.btnImg{
+    width: 100px;
+    height: 100px;
+}
+
+.chBtn{
+    background: transparent;
+    border: none;
+}
+
+.chBtn:hover{
+    opacity: 0.8;
+    transition: .5s;
+}
+
+.chBtn:focus{
+    outline: none;
+}
+
+.game_field{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+}
+
+.buttons{
+    width: 37%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    position: fixed;
+    top: 80%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+}
+
+.linkImg{
+    width: 60px;
+    margin-left: -5px;
+    margin-right: 20px;
+    border: rgba(0,0,0,.15)solid 1px;
+    border-radius: 60px;
+}
+
+.log_block {
+    position: fixed;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+}
+
+#winner{
+    font-size: 18px;
+}
+
+
+.player{
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.players{
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-self: center;
+    text-align: center;
+}
+
+#winblock{
+    position: fixed;
+    top: 20%;
+    left: 50% ;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+}
+
+#vs{
+    color: #d9534f;
+    font-size: 35px;
+    font-weight: bold;
+}
+
+.text_field, input[type="text"], input[type="password"]{
+    padding: 10px;
+    font-size: 14px;
+        outline: none;
+      background-color: transparent;
+      border: 1px solid #d9534f;
+      line-height: 0;
+      width: 100%;
+      display: block;
+      box-sizing: border-box;
+      border-radius: 60px;
+      color: #d9534f;
+      font-weight: 100;
+      letter-spacing: 0.01em;
+      z-index: 1;
+
+}
+
+.text_field::placeholder,input[type="text"]::placeholder, input[type="password"]::placeholder{
+    font-size: 11px;
+}
+
+.game-form {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.game-form:before {
+
+}
+
+#room-name-submit{
+    margin-left: -40px;
+    background: #d9534f;
+    border: none;
+    color: #fff;
+    border-radius: 60px;
+    width: 100px;
+    z-index: 10;
+}
+
+#random-game{
+    margin-left: 20px;
+    font-size: 15px;
+    background: transparent;
+    border: none;
+    padding: 10px;
+    color: #d9534f;
+    border-radius: 60px;
+    z-index: 10;
+    transition: .5s;
+}
+
+#random-game:hover{
+    background: rgba(217, 83, 79 ,1);
+
+    color: #ffffff;
+    transition: .5s;
+}
+
+#random-game:focus, #room-name-submit:focus{
+    outline: none;
+}
+
+#or_text{
+    margin: 10px;
+    margin-left: 30px;
+    font-size: 15px;
+    font-weight: bold;
+    vertical-align: center;
+    text-align: center;
+
+}
+#games{
+    margin: 20px;
+   margin-left: auto;
+    margin-right: auto;
+}
+
+.table_text{
+    font-size: 16px;
+    font-weight: bold;
+
+}
+
+.table_button{
+    margin-left: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    background: transparent;
+    border: none;
+    padding: 4px;
+    color: #46439c;
+    border-radius: 60px;
+    transition: .3s;
+    width: 80px ;
+    height: 40px;
+    margin: 5px;
+
+}
+
+.table_button:hover{
+    border: #46439c solid 2px;
+    transition: .3s;
+    background: rgba(70,67,157,0.1);
+}
+
+.table_container{
+    width: 100%;
+}
+
+#av_text{
+    font-size: 20px;
+    font-weight: bold;
+    color: #737373;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+#access{
+    font-size: 12px;
+    margin-top: 5px;
+    margin-left: 4px;
+    color: #d9534f;
+}
+
+.vs_table{
+    color: #d9534f;
+}
+
+.win{
+    color: #42c37e;
+}
+
+.lose{
+    color: #d9534f;
+}
+
+.rating{
+    color: #46439c;
+}
+
+.mygames td{
+    padding: 5px 15px;
+}
+
+.statistic{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.statistic th, tr{
+    text-align: center;
+}
+
+.statistic td {
+    padding: 5px 15px;
+}
+
+.statistic p{
+    margin: 10px;
+}
+
+.statistic th button{
+    cursor: pointer;
+    padding: 10px;
+    margin: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #d9534f;
+    border-radius: 60px;
+    z-index: 10;
+    transition: .5s;
+    border:none;
+    background: transparent;
+    border-radius: 60px;
+}
+
+.statistic th button:hover{
+    background: rgba(0, 0, 0 ,0.1);
+    transition: .5s;
+    }
+
+.statistic:focus{
+    outline: none;
+}
+
+
+.mystats{
+    margin: 30px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.mystats p{
+    margin: 0px 20px;
+}
+
+.stats{
+    margin: 30px;
+}
+
+.btn-primary, .btn{
+    background-color: #d9534f;
+    color: #ffffff;
+    border: none;
+}
+
+.btn-primary:hover, .btn:hover{
+    background-color: rgba(255, 94, 90, 0.62);
+    transition: .3s;
+}
